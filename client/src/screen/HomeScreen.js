@@ -9,11 +9,13 @@ import Loader from "../component/Loader";
 
 export const HomeScreen = () => {
   const dispatch = useDispatch();
-  const products = useSelector((p) => p.productList);
-  const { isError, isLoading, product } = products;
   useEffect(() => {
     dispatch(productList());
   }, [dispatch]);
+
+  const products = useSelector((p) => p.productList);
+  const { isError, isLoading, product } = products;
+
 
 
   return (

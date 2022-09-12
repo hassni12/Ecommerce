@@ -10,6 +10,9 @@ import orderCreateReducer from "./component/slice/orderSlice";
 import orderDetailsReducer from "./component/slice/orderGetSlice";
 import orderPayReducer from "./component/slice/orderPaySlice";
 import myOrderReducer from "./component/slice/myOrderListSlice";
+import  adminUsersListReducer from "./component/slice/adminUserGetSlice";
+
+
 export const store = configureStore({
   reducer: {
     productList: productReducer,
@@ -21,6 +24,7 @@ export const store = configureStore({
     orderCreate:orderCreateReducer,
     orderDetails: orderDetailsReducer,
     orderPay:orderPayReducer,
-    myOrder:myOrderReducer
+    myOrder:myOrderReducer,
+    adminUsersList:adminUsersListReducer
   },
 });

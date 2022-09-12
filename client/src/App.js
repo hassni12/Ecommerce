@@ -15,7 +15,8 @@ import { ShippingScreen } from "./screen/ShippingScreen";
 import { PaymentScreen } from "./screen/PaymentScreen";
 import { PlaceOrderScreen } from "./screen/PlaceOrderScreen";
 import { OrderDetailScreen } from "./screen/OrderDetailScreen";
-
+import { AdminUsersGetScreen } from "./screen/AdminUsersGetScreen";
+// AdminUsersGetScreen
 function App() {
   return (
     <div>
@@ -37,6 +38,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomeScreen />} />
             <Route path="/login" element={<LoginScreen/>}/>
+            <Route path="admin/userslist" element={<AdminUsersGetScreen/>}/>
             
             <Route path="/payment" element={<PaymentScreen/>}/>
             <Route path="/placeorder" element={<PlaceOrderScreen/>}/>

@@ -20,15 +20,15 @@ export const LoginScreen = () => {
   const userData = useSelector((p) => p.loginUser);
   console.log(userData);
 const redirect=location.search?location.search.split('=')[1]:"/"
-  
-const {isError,isLoading,userInfo}=userData
-console.log(isError,"is error from login")
-useEffect(()=>{
+  useEffect(()=>{
     if (userInfo){
         navigation(redirect)
     }
 },[userInfo,redirect,navigation]
 )
+const {isError,isLoading,userInfo}=userData
+console.log(isError,"is error from login")
+
 
 const onChangeHandler = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });

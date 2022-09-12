@@ -3,7 +3,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 export const myOrderDetailsApi = createAsyncThunk(
   "myOrder/myOrderDetailsApi",
-  async ( rejectWithValue) => {
+  async (rejectWithValue) => {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     const config = {
       headers: {
@@ -34,7 +34,7 @@ const myOrderSlice = createSlice({
   },
 reducers:{
     refreshUserOrder:(state, action)=>{
-        state.order = action.payload
+        state.order = []
     }
 },
   extraReducers: {

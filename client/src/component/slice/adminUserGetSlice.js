@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { toast } from "react-toastify";
-export const adminUserGet = createAsyncThunk(
-  "users/adminUserGet",
+export const adminUserGetApi = createAsyncThunk(
+  "users/adminUserGetApi",
   async (rejectWithValue) => {
    const userInfo= JSON.parse(localStorage.getItem('userInfo'));
 
-    console.log(userInfo,getState(),"getUser profile");
+    // console.log(userInfo,getState(),"getUser profile");
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -18,7 +18,6 @@ export const adminUserGet = createAsyncThunk(
         `http://localhost:8000/api/users/admin`,
         config
       );
-      //   dispatch(authUser({email,password}))
       console.log(data, "axios");
       return data;
     } catch (error) {
@@ -27,29 +26,29 @@ export const adminUserGet = createAsyncThunk(
   }
 );
 
-const getProfileSlice = createSlice({
+const adminGetUsersSlice = createSlice({
   name: "users",
   initialState: {
-    users: {},
+    users: [],
     isLoading: false,
     isError: null,
   },
   
   extraReducers: {
-    [getUser.pending]: (state, action) => {
+    [adminUserGetApi.pending]: (state, action) => {
       state.isLoading=true;
       state.isError=null;
     },
-    [getUser.fulfilled]: (state, action) => {
-      state.user = action.payload;
+    [adminUserGetApi.fulfilled]: (state, action) => {
+      state.users = action.payload;
       state.isLoading = false;
     },
-    [getUser.rejected]: (state, action) => {
+    [adminUserGetApi.rejected]: (state, action) => {
       state.isLoading = false;
       state.isError = action.payload.message;
     },
   },
 });
-export const {refreshUserProfile}=getProfileSlice.actions 
+// export const {refreshUserProfile}=getProfileSlice.actions 
 
-export default getProfileSlice.reducer;
+export default adminGetUsersSlice.reducer;

@@ -21,9 +21,6 @@ import Message from "../component/Message";
 // Message
 // useCallback
 export const CartScreen = () => {
-  // useCallback(() =>{
-
-  // })
   const navigation=useNavigate()
   const params = useParams();
   const location = useLocation();
@@ -32,15 +29,14 @@ export const CartScreen = () => {
 
   const id = params.id;
   const qty = location.search ? Number(location.search.split("=")[1]) : 1;
-  
-  // console.log(qty,id);
-  const { cartItem } = useSelector((p) => p.cart);
-  console.log(cartItem, "data from cart screen");
-  useEffect(() => {
+    useEffect(() => {
     if (id) {
       dispatch(addToCartApi({ id, qty }));
     }
   }, [dispatch, id, qty]);
+  const { cartItem } = useSelector((p) => p.cart);
+  console.log(cartItem, "data from cart screen");
+
   const removeFromCartHandler = (item) => {
 
     dispatch(removeCartItem(item))

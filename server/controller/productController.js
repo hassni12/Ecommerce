@@ -14,7 +14,7 @@ const getProductsById = asyncHandler(async (req, res) => {
   if (filteredProduct) {
     res.json(filteredProduct);
   } else {
-    throw new Error(`Product ${req.params._id} not found`);
+    throw new Error(`Product ${req.params.id} not found`);
   }
 });
 export { getProductsById, getProducts };

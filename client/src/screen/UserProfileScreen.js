@@ -14,7 +14,7 @@ import Loader from "../component/Loader";
 import Message from "../component/Message";
 import { getUser } from "../component/slice/getUserProfileSlice";
 import { profileUpdatedApi } from "../component/slice/profileUpdatedSlice";
-import { myOrderDetailsApi } from "../component/slice/myOrderListSlice";
+import { myOrderDetailsApi,refreshUserOrder } from "../component/slice/myOrderListSlice";
 import { LinkContainer } from "react-router-bootstrap";
 export const UserProfileScreen = () => {
   const navigation = useNavigate();
@@ -44,6 +44,7 @@ export const UserProfileScreen = () => {
       if (!user.name) {
         dispatch(getUser());
         dispatch(myOrderDetailsApi())
+        // if ()
       } else {
         setName(user.name);
         setEmail(user.email);

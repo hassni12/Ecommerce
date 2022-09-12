@@ -22,7 +22,7 @@ export const Header = () => {
   const logoutHandler=()=>{
 
    dispatch(logout())
-   dispatch(refreshUserOrder([]))
+   dispatch(refreshUserOrder())
    dispatch(refreshUserProfile({}))
 
   
@@ -63,6 +63,26 @@ export const Header = () => {
                   <i className="fas fa-user"></i>Sign In
                 </Nav.Link>
               </LinkContainer>
+            )}
+            {userInfo&&userInfo.isAdmin&&(
+              <>
+              <NavDropdown
+                title="Admin"
+                style={{ fontWeight: "bold", textTransform: "uppercase" }}
+              >
+                  <LinkContainer to="admin/userslist">
+              <NavDropdown.Item>USERS</NavDropdown.Item>
+            </LinkContainer>
+            <LinkContainer to="admin/productlist">
+            <NavDropdown.Item>PRODUCT</NavDropdown.Item>
+          </LinkContainer>
+          <LinkContainer to="admin/orderlist">
+            <NavDropdown.Item>ORDERS</NavDropdown.Item>
+          </LinkContainer>
+              </NavDropdown>
+              
+              </>
+            
             )}
           </Nav>
         </Navbar.Collapse>
