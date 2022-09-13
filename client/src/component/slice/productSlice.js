@@ -13,15 +13,18 @@ const productSlice = createSlice({
   initialState: {
     product: [],    
     isLoading: false,
+    isSuccess:false,
     isError: null,
   },
   extraReducers: {
     [productList.pending]: (state, action) => {
       state.isLoading = true;
+      state.isSuccess=false
       state.isError=null
     },
     [productList.fulfilled]: (state, action) => {
       state.product = action.payload;
+      state.isSuccess=true;
       state.isLoading = false;
     },
     [productList.rejected]: (state, action) => {

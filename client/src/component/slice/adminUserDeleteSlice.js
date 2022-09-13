@@ -1,9 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { toast } from "react-toastify";
-export const adminUserGetApi = createAsyncThunk(
-  "users/adminUserGetApi",
-  async (rejectWithValue) => {
+export const adminUserDeleteApi = createAsyncThunk(
+  "users/adminUserDeleteApi",
+  async ({id},{rejectWithValue}) => {
+    console.log(id,"deleted user id")
    const userInfo= JSON.parse(localStorage.getItem('userInfo'));
 
     // console.log(userInfo,getState(),"getUser profile");
@@ -14,8 +15,8 @@ export const adminUserGetApi = createAsyncThunk(
       },
     };
     try {
-      const { data } = await axios.get(
-        `http://localhost:8000/api/users/admin`,
+      const { data } = await axios.delete(
+        `http://localhost:8000/api/users/admin/${id}`,
         config
       );
       console.log(data, "axios");
@@ -26,35 +27,34 @@ export const adminUserGetApi = createAsyncThunk(
   }
 );
 
-const adminGetUsersSlice = createSlice({
+const adminDeleteUsersSlice = createSlice({
   name: "users",
   initialState: {
-    users: [],
+    deletedUsers: [],
     isLoading: false,
+    isSuccess:false,
     isError: null,
-  },
-  reducers:{
-    refreshAdminGetUser: (state, action) => {
-      state.users=[]
-    }
   },
   
   extraReducers: {
-    [adminUserGetApi.pending]: (state, action) => {
+    [adminUserDeleteApi.pending]: (state, action) => {
       state.isLoading=true;
+      state.isSuccess=false;
       state.isError=null;
     },
-    [adminUserGetApi.fulfilled]: (state, action) => {
+    [adminUserDeleteApi.fulfilled]: (state, action) => {
       state.users = action.payload;
+      state.isSuccess=true;
       state.isLoading = false;
     },
-    [adminUserGetApi.rejected]: (state, action) => {
+    [adminUserDeleteApi.rejected]: (state, action) => {
       state.isLoading = false;
+      state.isSuccess=false;
       console.log(action.payload)
       state.isError = action.payload.message;
     },
   },
 });
-export const {refreshAdminGetUser}=adminGetUsersSlice.actions 
+// export const {refreshAdminGetUser}=adminGetUsersSlice.actions 
 
-export default adminGetUsersSlice.reducer;
+export default adminDeleteUsersSlice.reducer;

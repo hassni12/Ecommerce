@@ -5,28 +5,34 @@ import { Link } from "react-router";
 import Navbar from "react-bootstrap/Navbar";
 import { LinkContainer } from "react-router-bootstrap";
 import { NavLink } from "react-router-dom";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "./slice/userSlice";
 import { refreshUserOrder } from "./slice/myOrderListSlice";
 import { refreshUserProfile } from "./slice/getUserProfileSlice";
-
-// logout
-// refreshUserOrder
+import { refreshAdminGetUser } from "./slice/adminUserGetSlice";
+import { removeRegisterInformation } from "./slice/registerSlice";
+import { resetAdminProduct } from "./slice/adminProductsSlice";
+// removeRegisterInformation
+// resetAdminProduct
 export const Header = () => {
   const navigation = useNavigate();
   const dispatch = useDispatch();
   const userData = useSelector((p) => p.loginUser);
   const { userInfo } = userData;
 
-  const logoutHandler=()=>{
+  const logoutHandler = () => {
 
-   dispatch(logout())
-   dispatch(refreshUserOrder())
-   dispatch(refreshUserProfile({}))
+    dispatch(logout())
+    dispatch(refreshUserOrder())
+    dispatch(refreshUserProfile({}))
+    dispatch(refreshAdminGetUser())
+    dispatch(removeRegisterInformation())
+    dispatch(resetAdminProduct())
+    navigation('/login')
 
-  
-  //  navigation('/')
+
+    //  navigation('/')
   }
 
   return (
@@ -55,7 +61,7 @@ export const Header = () => {
                 <LinkContainer to="/profile">
                   <NavDropdown.Item>profile</NavDropdown.Item>
                 </LinkContainer>
-                <NavDropdown.Item onClick={()=> logoutHandler()}>Logout</NavDropdown.Item>
+                <NavDropdown.Item onClick={() => logoutHandler()}>Logout</NavDropdown.Item>
               </NavDropdown>
             ) : (
               <LinkContainer to="/login">
@@ -64,25 +70,25 @@ export const Header = () => {
                 </Nav.Link>
               </LinkContainer>
             )}
-            {userInfo&&userInfo.isAdmin&&(
+            {userInfo && userInfo.isAdmin && (
               <>
-              <NavDropdown
-                title="Admin"
-                style={{ fontWeight: "bold", textTransform: "uppercase" }}
-              >
+                <NavDropdown
+                  title="Admin"
+                  style={{ fontWeight: "bold", textTransform: "uppercase" }}
+                >
                   <LinkContainer to="admin/userslist">
-              <NavDropdown.Item>USERS</NavDropdown.Item>
-            </LinkContainer>
-            <LinkContainer to="admin/productlist">
-            <NavDropdown.Item>PRODUCT</NavDropdown.Item>
-          </LinkContainer>
-          <LinkContainer to="admin/orderlist">
-            <NavDropdown.Item>ORDERS</NavDropdown.Item>
-          </LinkContainer>
-              </NavDropdown>
-              
+                    <NavDropdown.Item>USERS</NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to="admin/productlist">
+                    <NavDropdown.Item>PRODUCT</NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to="admin/orderlist">
+                    <NavDropdown.Item>ORDERS</NavDropdown.Item>
+                  </LinkContainer>
+                </NavDropdown>
+
               </>
-            
+
             )}
           </Nav>
         </Navbar.Collapse>

@@ -37,6 +37,11 @@ const registerSlice = createSlice({
     userInfo: userFromLocalStorage,
     isLoading: false,
     isError: null,
+  },reducers:{
+    removeRegisterInformation:(state, action)=>{
+      state.userInfo=null
+    }
+
   },
   extraReducers: {
     [registerUser.pending]: (state, action) => {
@@ -56,5 +61,5 @@ const registerSlice = createSlice({
     },
   },
 });
-
+export const {removeRegisterInformation}=registerSlice.actions
 export default registerSlice.reducer;

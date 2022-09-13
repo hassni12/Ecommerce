@@ -97,10 +97,12 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       isAdmin: updatedUser.isAdmin,
       accessToken: generateToken(user._id),
     });
+    res.send({ message: 'user profile updated successfully' });
     console.log(updatedUser, "updatedUser");
   } else {
     res.status(404);
-    throw new Error("user profile updated successfully");
+    res.send({ message: 'user profile not updated' });
+    // throw new Error("user profile not updated");
   }
 });
 const adminGetUsers = asyncHandler(async (req, res) => {
@@ -110,4 +112,59 @@ const adminGetUsers = asyncHandler(async (req, res) => {
   console.log(req.user, "profile");
 
 });
-export { authUser, registerUser, getUserProfile, updateUserProfile, adminGetUsers };
+const usersDelete = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+  if (!user) {
+    res.status(404);
+    throw new Error("user delete successfully");
+  } else {
+    await user.remove();
+    res.send({ message: 'User deleted successfully' });
+    res.status(200).json(user)
+  }
+  // res.json(user)
+
+  console.log(req.user, "profile");
+
+});
+const getAdminUserForUpdate = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id).select('-password');
+  if (!user) {
+    res.status(404);
+    res.json({ message: "user not found" });
+  } else {
+    res.status(200).json(user).send({ message: "User Found successfully" });
+    // res.send({ message: 'User Found successfully' });
+    
+  }
+  // res.json(user)
+
+  // console.log(req.user, "profile");
+
+});
+const updateAdminUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+  if (user) {
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
+    user.isAdmin = req.body.isAdmin
+
+    const updatedUser = await user.save();
+
+    res.status(200).json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      isAdmin: updatedUser.isAdmin,
+      accessToken: generateToken(user._id),
+    });
+    console.log(updatedUser, "updatedUser");
+    // res.send({ message: 'user profile updated' });
+  } else {
+    res.status(404).send({ message: 'user profile updated successfully' });
+    // throw new Error("user profile updated successfully");
+  }
+});
+
+
+export { authUser, registerUser, getUserProfile, getAdminUserForUpdate, updateAdminUser, updateUserProfile, adminGetUsers, usersDelete };
