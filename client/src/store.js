@@ -12,9 +12,12 @@ import orderPayReducer from "./component/slice/orderPaySlice";
 import myOrderReducer from "./component/slice/myOrderListSlice";
 import  adminUsersListReducer from "./component/slice/adminUserGetSlice";
 import adminUserDeleteReducer from "./component/slice/adminUserDeleteSlice";
-// adminUserDeleteSlice
 import adminUserGetAndUpdateByIdReducer from "./component/slice/adminUserGetByIdSlice";
 import adminDeleteProductsReducer from "./component/slice/adminProductsSlice"
+import adminCreateProductReducer from "./component/slice/adminCreateProductSlice";
+import adminGetUsersOrderReducer from "./component/slice/adminGetUsersOrderSlice";
+// import adminGetUserOrdersReducer from "./component/slice/adminGetUserOrdersSlice"
+// adminGetUsersOrderSlice
 export const store = configureStore({
   reducer: {
     productList: productReducer,
@@ -30,6 +33,8 @@ export const store = configureStore({
     adminUsersList:adminUsersListReducer,
     deletedUsers:adminUserDeleteReducer,
     getAndUpdateUserInAdmin:adminUserGetAndUpdateByIdReducer,
-    adminProduct:adminDeleteProductsReducer
+    adminProduct:adminDeleteProductsReducer,
+    productCreate:adminCreateProductReducer,
+    orderList:adminGetUsersOrderReducer
   },
 });

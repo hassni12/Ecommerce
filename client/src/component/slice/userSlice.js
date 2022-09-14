@@ -59,7 +59,7 @@ const userSlice = createSlice({
     },
     [authUser.rejected]: (state, action) => {
       state.isLoading = false;
-      state.isError = action.payload;
+      state.isError = action.payload.message;
     },
   },
 });

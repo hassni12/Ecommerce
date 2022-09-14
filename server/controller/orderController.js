@@ -77,5 +77,15 @@ const getMyOrders = asyncHandler(async (req, res, next) => {
 //  res.json(order)
 });
 
+const adminGetUsersOrders = asyncHandler(async (req, res, next) => {
 
-export { addOrderItems, getOrderItems ,updateOrderToPaid ,getMyOrders };
+  const order = await Order.find().populate("userId","id name")
+  if(!order){
+    res.status(402).json({message: "Order not found"})
+  }else{
+    res.json(order);
+  }
+  
+});
+
+export { addOrderItems, getOrderItems ,updateOrderToPaid ,getMyOrders ,adminGetUsersOrders };

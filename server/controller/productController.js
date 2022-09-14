@@ -21,7 +21,7 @@ const getProductAdminAndDelete = asyncHandler(async (req, res) => {
   const filteredProduct = await Product.findById(req.params.id);
   if (filteredProduct) {
     await filteredProduct.remove()
-    res.json({ message: 'Product deleted successfully', data: filteredProduct });
+    res.json(filteredProduct);
   } else {
     res.json({ message: `Product not found` });
   }
@@ -43,13 +43,18 @@ const updateAdminProductsById = asyncHandler(async (req, res) => {
   } else {
     res.status(404).send({ message: 'products not updated' });
   }
+  console.log(req)
 });
 const adminCreateProduct = asyncHandler(async (req, res) => {
-  const { name, image, brand, description, category, countInStock, price } = req.body
-
   const product = await Product.create({
-    name:"name of any Product", image:"/", brand, description, category, countInStock, price
+    name: "name of any Product", user:req.user
+    ,image: "/image/new.png",
+     brand: "brand",
+      description: "insert the Product description",
+       category: "insert the Product category",
+        countInStock: 4, price: 2
   });
+  console.log(req)
   if (product) {
     res.status(200).json({
       message: 'Product created successfully', data: product

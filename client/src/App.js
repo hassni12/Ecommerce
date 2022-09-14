@@ -19,7 +19,8 @@ import { AdminUsersGetScreen } from "./screen/AdminUsersGetScreen";
 import { AdminUserUpdateScreen } from "./screen/AdminUserUpdateScreen";
 import { AdminProductListScreen } from "./screen/AdminProductListScreen";
 import { AdminProductUpdateScreen } from "./screen/AdminProductUpdateScreen";
-
+import { AdminUsersOrdersScreen } from "./screen/AdminUsersOrdersScreen";
+// AdminUsersOrdersScreen
 function App() {
   return (
     <div>
@@ -43,6 +44,8 @@ function App() {
             <Route path="/login" element={<LoginScreen />} />
             <Route path="/admin/userslist" element={<AdminUsersGetScreen />} />
             <Route path="/admin/productlist" element={<AdminProductListScreen />} />
+            <Route path="/admin/orderlist" element={<AdminUsersOrdersScreen />} />
+
             <Route path="/admin/product/:id/edit" element={<AdminProductUpdateScreen/>} />
             <Route path="/admin/user/:id/edit" element={<AdminUserUpdateScreen/>} />
             <Route path="/payment" element={<PaymentScreen />} />

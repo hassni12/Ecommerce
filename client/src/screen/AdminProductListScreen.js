@@ -2,6 +2,7 @@
 import { LinkContainer } from "react-router-bootstrap"
 import { useDispatch, useSelector } from "react-redux";
 // Link
+// useCallback
 import { Table } from "react-bootstrap";
 import {
     Row, Col,
@@ -14,39 +15,48 @@ import Message from "../component/Message";
 import { adminUserGetApi } from "../component/slice/adminUserGetSlice";
 import Loader from "../component/Loader";
 // productList
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { productList } from "../component/slice/productSlice";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 // import { adminUserDeleteApi } from "../component/slice/adminUserDeleteSlice";
 import { adminGetProductByIdApi } from "../component/slice/adminProductsSlice";
-import { ifError } from "assert";
+// adminCreateProductsApi
 import { productFilterById } from "../component/slice/productFilterSlice";
-
-// productFilterById
+import { adminCreateProductsApi, resetAdminCreateProduct } from "../component/slice/adminCreateProductSlice";
 export const AdminProductListScreen = () => {
-    // <Outlet></Outlet>
     const navigation = useNavigate();
     const dispatch = useDispatch();
-    const { product, isLoading,  isError } = useSelector((p) => p.productList)
-    const { isSuccess: successFindProduct } = useSelector((p) => p.adminProduct)
+    const { product, isLoading, isError } = useSelector((p) => p.productList)
+    const { isSuccess } = useSelector((p) => p.adminProduct)
+
+    const { isSuccess: successOfCreateProduct, newCreatedproduct } = useSelector((p) => p.productCreate)
+    console.log(newCreatedproduct.data, "created product")
     const { userInfo } = useSelector((p) => p.loginUser)
     useEffect(() => {
-        if (userInfo && userInfo.isAdmin) {
-            dispatch(productList())
-        } else {
+        dispatch(resetAdminCreateProduct());
+        if (!userInfo.isAdmin) {
             navigation('/login')
+
         }
-    }, [dispatch, successFindProduct, navigation,userInfo])
+
+        if (successOfCreateProduct) {
+            navigation(`/admin/product/${newCreatedproduct.data._id}/edit`)
+
+        } else {
+            dispatch(productList())
+
+        }
+    }, [dispatch, successOfCreateProduct, isSuccess, navigation, userInfo])
     const onDeleteHandler = (id) => {
         if (window.confirm("Are you sure you want to delete this product")) {
             dispatch(adminGetProductByIdApi(id))
             console.log(id)
         }
     }
-    const createProductHandler = (product) => {
-        
+    const createProductHandler = useCallback(() => {
+        dispatch(adminCreateProductsApi())
 
-    }
+    }, [dispatch])
 
 
     return (
