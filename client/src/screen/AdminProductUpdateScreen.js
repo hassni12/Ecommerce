@@ -6,6 +6,8 @@ import { registerUser } from "../component/slice/registerSlice";
 import Loader from "../component/Loader";
 import Message from "../component/Message";
 // adminProductUpdateApi
+// Form
+import axios from "axios";
 // adminGetProductByIdApi
 // productFilterById
 
@@ -13,6 +15,7 @@ import Message from "../component/Message";
 import { adminGetProductByIdApi, adminProductUpdateApi, resetAdminProduct } from "../component/slice/adminProductsSlice";
 import { productList } from "../component/slice/productSlice";
 import { productFilterById } from "../component/slice/productFilterSlice";
+import { Form } from "react-bootstrap";
 // import { Product } from "../component/Product";
 export const AdminProductUpdateScreen = () => {
     const params = useParams();
@@ -26,12 +29,13 @@ export const AdminProductUpdateScreen = () => {
     const [countInStock, setCountInStock] = useState("")
     const [price, setPrice] = useState(0)
     const [image, setImage] = useState("")
+    const [upLoading, setUpLoading] = useState(false)
     const { id } = params;
-    console.log(id)
+    // console.log(id)
     const { isError, isLoading, isSuccess, productFilter: product } = useSelector((p) => p.productFilter);
 
     const { isSuccess: isSuccessProduct } = useSelector((p) => p.adminProduct);
-    console.log(product, "productslist")
+    // console.log(product, "productslist")
     useEffect(() => {
         if (isSuccessProduct) {
             dispatch(resetAdminProduct())
@@ -51,13 +55,39 @@ export const AdminProductUpdateScreen = () => {
             }
         }
 
-    }, [dispatch, id, isSuccessProduct, navigation,product]);
+    }, [dispatch, id, isSuccessProduct, navigation, product]);
+
+    const uploadImageHandler = async (e) => {
+        const file = e.target.files[0]
+        console.log(file[0],"file",e,"e")
+        const formData = new FormData()
+
+        formData.append('image', file)
+       console.log(formData,"formDataFile")
+        try {
+
+            const config = {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+
+                }
+            }
+            const { data } = await axios.post('http://localhost:8000/api/upload', formData, config)
+            setImage(data)
+            console.log(data, "axios image")
+        } catch (error) {
+            console.log(error)
+
+        }
+    }
 
     const onSubmitHandler = (e) => {
         e.preventDefault();
         dispatch(adminProductUpdateApi({ id, name, image, brand, description, category, countInStock, price }))
 
     };
+
+
     return (
         <FormContainer>
             <Link to="/admin/productlist" className="btn btn-primary my-3">Go Back</Link>
@@ -116,12 +146,18 @@ export const AdminProductUpdateScreen = () => {
                         </div>
                         <div className="form-outline mb-4">
                             <input
-                                type="text"
-                                className="form-control"
+                                className="form-control" type="text"
                                 name="image"
                                 value={image}
+                                // onChange={uploadImageHandler}
                                 onChange={(e) => setImage(e.target.value)}
                             />
+                            <input
+                                className="form-control mt-2" type="file"
+                                name="image"
+                                onChange={(e) => uploadImageHandler(e)}
+                            />
+
                             <label className="form-label">image</label>
                         </div>
 

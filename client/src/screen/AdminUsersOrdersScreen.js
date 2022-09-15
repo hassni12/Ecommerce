@@ -89,7 +89,7 @@ export const AdminUsersOrdersScreen = () => {
                                         
                                     </td>
                                     <td>
-                                    <LinkContainer to={`/products/${users.orderItems_id}`}>
+                                    <LinkContainer to={`/order/${users._id}`}>
                                             <Button className="btn-sm btn-block" variant="light">
                                                 DETAILS
                                                 {/* <i className="fas fa-edit" style={{ color: "green" }}></i> */}

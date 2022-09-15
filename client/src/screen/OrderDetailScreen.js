@@ -10,6 +10,7 @@ import {
   Form,
   Container,
 } from "react-bootstrap";
+// orderDeliverApi
 import { PayPalButton } from "react-paypal-button-v2";
 import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,6 +19,7 @@ import Message from "../component/Message";
 import Loader from "../component/Loader";
 import { orderDetailApi } from "../component/slice/orderGetSlice";
 import { orderPayApi, refresh } from "../component/slice/orderPaySlice";
+import { orderDeliverApi, refreshDeliver } from "../component/slice/orderDeliverdSlice";
 // orderPayApi
 export const OrderDetailScreen = () => {
   const navigation = useNavigate();
@@ -26,8 +28,10 @@ export const OrderDetailScreen = () => {
   const orderId = params.id;
   const orderDetail = useSelector((p) => p.orderDetails);
   const orderPay = useSelector((p) => p.orderPay);
-  // console.log(orderDetail, "order");
 
+  // console.log(orderDetail, "order");
+  const { userInfo } = useSelector((p) => p.loginUser);
+  const { orderDeliver, isSuccess: successDeliver } = useSelector((p) => p.orderDelivred);
   const { isError, isLoading, isSuccess, order } = orderDetail;
   const { isError: errorPay, isLoading: loadingPay, isSuccess: successPay, order: orderPayDetails } = orderPay;
 
@@ -49,14 +53,12 @@ export const OrderDetailScreen = () => {
       };
       document.body.appendChild(script);
     };
+    // console.log(order, "order where i find error ")
 
     if (!order || order._id !== orderId) {
-      if (successPay) {
-        // dispatch(refresh())  
-        dispatch(orderDetailApi(orderId))
-        // )  
 
-      }
+      dispatch(refresh())
+      dispatch(refreshDeliver())
       dispatch(orderDetailApi(orderId))
     } else if (!order.isPaid) {
       if (!window.paypal) {
@@ -66,18 +68,21 @@ export const OrderDetailScreen = () => {
     } else {
       setSdk(true)
     }
+  }, [dispatch, orderId, order,successDeliver]);
+  const deliverHandler = ((e) =>
+    dispatch(orderDeliverApi(e)))
+  console.log(orderDeliver, "orderDeliver");
+  const onSuccessPaymentHandler = ((paymentResult) =>
 
-
-  }, [dispatch, orderId, order]);
-  console.log(orderId, "userId");
-  const onSuccessPaymentHandler = useCallback((paymentResult) => {
-
-    console.log(paymentResult, "result of payment")
+    //  console.log(paymentResult, "result of payment")
     dispatch(orderPayApi({ orderId, paymentResult }))
 
 
-  })
+  )
+
+
   if (isSuccess) {
+
     return (
       <div>
         {isLoading ? (
@@ -213,6 +218,13 @@ export const OrderDetailScreen = () => {
                             <PayPalButton amount={order.totalPrice} onSuccess={onSuccessPaymentHandler}
                             />
                           )}
+                        </ListGroup.Item>
+                      )}
+                      {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                        <ListGroup.Item>
+                          <Button type='button' className="btn btn-primary btn-block" onClick={() => deliverHandler(order._id)}>
+                            Mark As Deliverd
+                          </Button>
                         </ListGroup.Item>
                       )}
                     </ListGroup>

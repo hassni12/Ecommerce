@@ -16,8 +16,10 @@ import adminUserGetAndUpdateByIdReducer from "./component/slice/adminUserGetById
 import adminDeleteProductsReducer from "./component/slice/adminProductsSlice"
 import adminCreateProductReducer from "./component/slice/adminCreateProductSlice";
 import adminGetUsersOrderReducer from "./component/slice/adminGetUsersOrderSlice";
+import orderDeliverReducer from "./component/slice/orderDeliverdSlice";
 // import adminGetUserOrdersReducer from "./component/slice/adminGetUserOrdersSlice"
 // adminGetUsersOrderSlice
+// orderDeliverdSlice
 export const store = configureStore({
   reducer: {
     productList: productReducer,
@@ -35,6 +37,7 @@ export const store = configureStore({
     getAndUpdateUserInAdmin:adminUserGetAndUpdateByIdReducer,
     adminProduct:adminDeleteProductsReducer,
     productCreate:adminCreateProductReducer,
-    orderList:adminGetUsersOrderReducer
+    orderList:adminGetUsersOrderReducer,
+    orderDelivred:orderDeliverReducer
   },
 });
